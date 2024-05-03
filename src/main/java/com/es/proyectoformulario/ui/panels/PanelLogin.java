@@ -55,7 +55,7 @@ public class PanelLogin extends JPanel {
         // usuario.setFont(new Font("Consolas", Font.BOLD, 22));
         this.add(usuario);
 
-        user = new JTextField("Introduzca su usuario");
+        user = new JTextField("");
         user.setLocation(new Point(260,135));
         user.setSize(new Dimension(152,32));
         this.add(user);

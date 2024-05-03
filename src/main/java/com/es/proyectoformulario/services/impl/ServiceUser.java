@@ -50,4 +50,24 @@ public class ServiceUser {
         gestionUser.modificarFichero(this.users, this.ruta);
     }
 
+    public boolean altaUsuario(User user) {
+        boolean usuarioRegistrado = false;
+        if (!user.getId().contains(":") && !user.getName().contains(":") && !user.getPass().contains(":")) {
+            if (user.getId().length() <= 20 && user.getPass().length() <= 20 && user.getName().length() <= 20) {
+                    if (!userExists(user.getId())) {
+                        gestionUser.anadirFichero(user, "C:\\Users\\dlopnun1503\\Desktop\\Programacion\\ProyectoFormulario\\src\\main\\resources\\users\\users.txt");
+                        users.add(user);
+                        usuarioRegistrado = true;
+                    } else {
+                        System.out.println("Usuario existente");
+                    }
+            }else {
+                System.out.println("Maximo 20 caracteres");
+            }
+        }else {
+            System.out.println(": no disponible en dichos campos");
+        }
+        return usuarioRegistrado;
+    }
+
 }
