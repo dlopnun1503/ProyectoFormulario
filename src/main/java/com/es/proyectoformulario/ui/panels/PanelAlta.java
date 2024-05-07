@@ -3,6 +3,7 @@ package com.es.proyectoformulario.ui.panels;
 import com.es.proyectoformulario.model.User;
 import com.es.proyectoformulario.services.impl.GestionFicheroUser;
 import com.es.proyectoformulario.services.impl.ServiceUser;
+import com.es.proyectoformulario.ui.frames.FrameLogin;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -13,12 +14,21 @@ import java.awt.event.MouseListener;
 
 public class PanelAlta extends JPanel {
 
+    private FrameLogin framePadre;
     JTextField idUser;
     JTextField nombreUser;
     JPasswordField pass;
     JPasswordField pass1;
     JCheckBox esAdmin;
     JButton registrarse;
+    private JButton volver;
+
+    private MouseListener mouseListenerVolver = new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            cargarPanelVolver();
+        }
+    };
 
     ServiceUser serviceUser = new ServiceUser();
     GestionFicheroUser gf = new GestionFicheroUser();
@@ -61,7 +71,10 @@ public class PanelAlta extends JPanel {
             b.setBorder(new LineBorder(new Color(135, 206, 250), 3)); // Borde azul claro
         }
     };
-    public PanelAlta(){
+    public PanelAlta(FrameLogin framePadre){
+
+        this.framePadre = framePadre;
+
         this.setBackground(new Color(174, 139, 225));
         this.setLayout(null);
 
@@ -123,6 +136,24 @@ public class PanelAlta extends JPanel {
         registrarse.setSize(new Dimension(152,32));
         this.add(registrarse);
         registrarse.addMouseListener(listenerMouse);
+
+        volver = new JButton("Volver");
+        volver.setLocation(new Point(20,500));
+        volver.setSize(new Dimension(152,32));
+        volver.addMouseListener(mouseListenerVolver);
+        this.add(volver);
     }
 
+    private void cargarPanelVolver(){
+        // Eliminamos this panelLogin....este....no otro
+        framePadre.remove(this);
+
+        // Añadimos un panelAlta al frame
+        PanelLogin panelLogin = new PanelLogin(framePadre);
+        framePadre.add(panelLogin);
+
+        // Ultimo: Repintar el frame
+        framePadre.repaint();
+        framePadre.revalidate();
+    }
 }

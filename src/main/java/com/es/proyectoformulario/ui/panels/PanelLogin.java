@@ -2,6 +2,7 @@ package com.es.proyectoformulario.ui.panels;
 
 
 import com.es.proyectoformulario.services.impl.ServiceUser;
+import com.es.proyectoformulario.ui.frames.FrameLogin;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -11,12 +12,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 /**
- * @author Pablo Macías
+ * @author David Lopez
  */
 public class PanelLogin extends JPanel {
     JTextField user;
     JTextField pass;
     JButton bEnviar;
+    private FrameLogin framePadre;
+    private JButton botonAlta;
 
     ServiceUser serviceUser = new ServiceUser();
 
@@ -25,7 +28,7 @@ public class PanelLogin extends JPanel {
         public void mouseClicked(MouseEvent e) {
 
             if(serviceUser.checkUser(user.getText(), pass.getText())) {
-                System.out.println("Esta registrado");
+                cargarPanelEnviar();
             } else {
                 System.out.println("Pa tu casa");
             }
@@ -45,7 +48,18 @@ public class PanelLogin extends JPanel {
             b.setBorder(new LineBorder(new Color(135, 206, 250), 3)); // Borde azul claro
         }
     };
-    public PanelLogin() {
+
+    private MouseListener mouseListenerAlta = new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            cargarPanelAlta();
+        }
+    };
+
+    public PanelLogin(FrameLogin framePadre) {
+
+        this.framePadre = framePadre;
+
         this.setBackground(new Color(174, 139, 225));
         this.setLayout(null);
 
@@ -70,11 +84,46 @@ public class PanelLogin extends JPanel {
         pass.setSize(new Dimension(152,32));
         this.add(pass);
 
-        bEnviar = new JButton("Enviar");
-        bEnviar.setLocation(new Point(220,321));
+        bEnviar = new JButton("Login");
+        bEnviar.setLocation(new Point(150,321));
         bEnviar.setSize(new Dimension(152,32));
         this.add(bEnviar);
         bEnviar.addMouseListener(listenerMouse);
 
+
+        botonAlta = new JButton("Darse de alta");
+        botonAlta.setLocation(new Point(350, 321));
+        botonAlta.setSize(new Dimension(152,32));
+        this.add(botonAlta);
+        botonAlta.addMouseListener(mouseListenerAlta);
     }
+
+
+    private void cargarPanelAlta(){
+        // Eliminamos this panelLogin....este....no otro
+        framePadre.remove(this);
+
+        // Añadimos un panelAlta al frame
+        PanelAlta panelAlta = new PanelAlta(framePadre);
+        framePadre.add(panelAlta);
+
+        // Ultimo: Repintar el frame
+        framePadre.repaint();
+        framePadre.revalidate();
+    }
+
+
+    private void cargarPanelEnviar(){
+        // Eliminamos this panelLogin....este....no otro
+        framePadre.remove(this);
+
+        // Añadimos un panelAlta al frame
+        PanelOpciones panelOpciones = new PanelOpciones(framePadre);
+        framePadre.add(panelOpciones);
+
+        // Ultimo: Repintar el frame
+        framePadre.repaint();
+        framePadre.revalidate();
+    }
+
 }
